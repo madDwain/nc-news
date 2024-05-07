@@ -1,4 +1,9 @@
 import React from "react";
+import { getArticleByID } from "../utils/api";
+import { Routes, Route } from "react-router-dom";
+import ArticleList from "./articleList";
+import SingleArticleDetails from "./singleArticleDetails";
+import { Link } from "react-router-dom";
 
 const SingleArticle = ({ article }) => {
   return (
@@ -8,9 +13,14 @@ const SingleArticle = ({ article }) => {
         <p className="article-topic">{article.topic}</p>
         <p className="article-author">{article.author}</p>
       </div>
-      <div className='single-article-line'>
-        <p className='article-comment-count'>Comment Count: {article.comment_count}</p>
-        <p className='article-vote-count'>Vote Count: {article.votes}</p>
+      <div className="single-article-line">
+        <p className="article-comment-count">
+          Comment Count: {article.comment_count}
+        </p>
+        <p className="article-vote-count">Vote Count: {article.votes}</p>
+        <Link to={`/articles/${article.article_id}`} element={article}>
+          <button className='btn'>View Article</button>
+        </Link>
       </div>
     </div>
   );

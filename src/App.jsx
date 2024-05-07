@@ -4,8 +4,6 @@ import Header from "../components/header";
 import Home from "../components/home";
 import Topics from "../components/topics";
 import Comments from "../components/comments";
-import { useState } from "react";
-import ArticleList from "../components/articleList";
 
 function App() {
   return (

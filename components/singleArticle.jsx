@@ -1,8 +1,4 @@
 import React from "react";
-import { getArticleByID } from "../utils/api";
-import { Routes, Route } from "react-router-dom";
-import ArticleList from "./articleList";
-import SingleArticleDetails from "./singleArticleDetails";
 import { Link } from "react-router-dom";
 
 const SingleArticle = ({ article }) => {

@@ -5,44 +5,42 @@ import { getArticleByID } from "../utils/api";
 
 const SingleArticleDetails = () => {
   const { article_id } = useParams();
-  const [singleArticleTitle, setSingleArticleTitle] = useState("");
-  const [singleArticleTopic, setSingleArticleTopic] = useState("");
-  const [singleArticleAuthor, setSingleArticleAuthor] = useState("");
-  const [singleArticleBody, setSingleArticleBody] = useState("");
-  const [singleArticleCreated, setSingleArticleCreated] = useState("");
-  const [singleArticleVotes, setSingleArticleVotes] = useState("");
-  const [singleArticleImg, setSingleArticleImg] = useState("");
-  const [isLoading, setIsLoading] = useState(true)
+  const [article, setArticle] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isError, setIsError] = useState(false)
 
   useEffect(() => {
-    getArticleByID(article_id).then(({ data }) => {
-      setSingleArticleTitle(data.article.title);
-      setSingleArticleTopic(data.article.topic);
-      setSingleArticleAuthor(data.article.author);
-      setSingleArticleBody(data.article.body);
-      setSingleArticleCreated(data.article.created_at);
-      setSingleArticleVotes(data.article.votes);
-      setSingleArticleImg(data.article.article_img_url);
-      setIsLoading(false)
-    });
-  }, []);
+    getArticleByID(article_id)
+      .then(({ data }) => {
+        setIsError(false)
+        setArticle(data.article);
+        setIsLoading(false);
+      })
+      .catch((err) => {
+        setIsError(true)
+      });
+  }, [article]);
 
   if (isLoading) {
-    return <p>Loading... Please wait...</p>
+    return <p>Loading... Please wait...</p>;
+  }
+
+  if (isError) {
+    return <p>Uh Oh Spaghettios! Something has gone wrong...</p>;
   }
 
   return (
     <div className="single-article-full-details">
-      <p className="article-title">{singleArticleTitle}</p>
-      <img src={singleArticleImg} className='single-article-img'></img>
-      <div className='single-article-line'>
-      <p className="article-author">Author: {singleArticleAuthor}</p>
-      <p className="article-topic">Topic: {singleArticleTopic}</p>
+      <p className="article-title">{article.title}</p>
+      <img src={article.article_img_url} className="single-article-img"></img>
+      <div className="single-article-line">
+        <p className="article-author">Author: {article.author}</p>
+        <p className="article-topic">Topic: {article.topic}</p>
       </div>
-      <p className="article-body">{singleArticleBody}</p>
-      <div className='single-article-line'>
-      <p className="article-created">Created: {singleArticleCreated}</p>
-      <p className="article-votes">Votes: {singleArticleVotes}</p>
+      <p className="article-body">{article.body}</p>
+      <div className="single-article-line">
+        <p className="article-created">Created: {article.created_at}</p>
+        <p className="article-votes">Votes: {article.votes}</p>
       </div>
     </div>
   );

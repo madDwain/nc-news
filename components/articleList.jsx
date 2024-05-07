@@ -3,7 +3,7 @@ import SingleArticle from "./singleArticle";
 
 const ArticleList = ({ articles }) => {
   return (
-    <ul>
+    <ul className="article-list">
       {articles.map((article) => {
         return (
           <SingleArticle

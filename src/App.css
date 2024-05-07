@@ -1,4 +1,7 @@
 #root {
+  display: flex;
+  flex-direction: column ;
+  justify-content: center;
   max-width: 1280px;
   margin: 0 auto;
   padding: 2rem;
@@ -7,14 +10,13 @@
 
 .navbar {
   align-items: center;
+  align-self: center;
   flex-direction: column;
-  justify-content: left;
   border: solid;
   border-radius: 10px;
   padding: 1rem;
   margin-bottom: 4px;
   background-color: bisque;
-
 }
 
 .navbar-item {
@@ -23,6 +25,16 @@
   padding: 4px;
   font-weight: 550;
   color: rgb(68, 12, 12);
+}
+
+.article-list {
+  display: flex;
+  flex-direction: column;
+  flex-flow: column;
+  align-items: center;
+  padding: 2rem;
+  background-color:darkcyan;
+  border-radius: 8px;
 }
 
 .single-article-container {
@@ -34,8 +46,8 @@
   padding: 1rem;
   margin-bottom: 4px;
   background-color: bisque;
-  width: 90%;
-  max-width: 1500px;
+  width: 80%;
+  max-width: 900px;
 }
 
 .single-article-line {
@@ -73,13 +85,11 @@
 }
 
 .single-article-full-details {
-  display: flex;
   align-items: center;
-  flex-direction: column;
+  align-self: center;
   border: solid;
   border-radius: 10px;
   padding: 1rem;
-  margin-bottom: 4px;
   background-color: bisque;
   width: 90%;
   max-width: 1500px;
@@ -96,6 +106,8 @@
 
 .single-article-img {
   border-radius: 10px;
+  width: 80%;
+  max-width: 1500px
 }
 
 .btn {

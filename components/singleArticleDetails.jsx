@@ -1,23 +1,22 @@
 import React, { useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { useState } from "react";
 import { getArticleByID } from "../utils/api";
 
-const SingleArticleDetails = () => {
+const SingleArticleDetails = ({article, setArticle}) => {
   const { article_id } = useParams();
-  const [article, setArticle] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [isError, setIsError] = useState(false)
+  const [isError, setIsError] = useState(false);
 
   useEffect(() => {
     getArticleByID(article_id)
       .then(({ data }) => {
-        setIsError(false)
+        setIsError(false);
         setArticle(data.article);
         setIsLoading(false);
       })
       .catch((err) => {
-        setIsError(true)
+        setIsError(true);
       });
   }, [article]);
 
@@ -39,8 +38,16 @@ const SingleArticleDetails = () => {
       </div>
       <p className="article-body">{article.body}</p>
       <div className="single-article-line">
+        <p className="article-comment-count">
+          Comment Count: {article.comment_count}
+        </p>
+        <p className="article-vote-count">Votes: {article.votes}</p>
+      </div>
+      <div className="single-article-line">
+      <Link to={`/articles/${article_id}/comments`} >
+          <button className='btn'>View/Post Comments</button>
+        </Link>
         <p className="article-created">Created: {article.created_at}</p>
-        <p className="article-votes">Votes: {article.votes}</p>
       </div>
     </div>
   );

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import ArticleList from "./articleList";
-import { Link } from "react-router-dom";
 import { getAllArticles } from "../utils/api";
 
 const Home = () => {

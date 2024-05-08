@@ -15,3 +15,11 @@ export function getArticleByID(article_id) {
 export function getCommentsByArticleID(article_id) {
   return ncNewsAPI.get(`/articles/${article_id}/comments`, {})
 }
+
+export function incArticleVote(article_id) {
+  return ncNewsAPI.patch(`/articles/${article_id}`, {inc_votes: 1})
+}
+
+export function incDownArticleVote(article_id) {
+  return ncNewsAPI.patch(`/articles/${article_id}`, {inc_votes: -1})
+}

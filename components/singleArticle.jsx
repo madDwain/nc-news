@@ -14,7 +14,7 @@ const SingleArticle = ({ article }) => {
           Comment Count: {article.comment_count}
         </p>
         <p className="article-vote-count">Vote Count: {article.votes}</p>
-        <Link to={`/articles/${article.article_id}`} element={article}>
+        <Link to={`/articles/${article.article_id}`} >
           <button className='btn'>View Article</button>
         </Link>
       </div>

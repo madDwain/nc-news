@@ -1,7 +1,13 @@
 import React, { useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { useState } from "react";
-import { getArticleByID, incArticleVote, incDownArticleVote } from "../utils/api";
+import {
+  getArticleByID,
+  incArticleVote,
+  incDownArticleVote,
+  getCommentsByArticleID,
+} from "../../utils/api";
+import CommentList from "./commentList";
 
 const SingleArticleDetails = ({ article, setArticle }) => {
   const { article_id } = useParams();
@@ -9,6 +15,9 @@ const SingleArticleDetails = ({ article, setArticle }) => {
   const [isError, setIsError] = useState(false);
   const [isClicked, setIsClicked] = useState(false);
   const [voteCount, setVoteCount] = useState(article.votes);
+  const [commentsHidden, setCommentsHidden] = useState(false);
+  const [isCommentListError, setIsCommentListError] = useState(false);
+  const [comments, setComments] = useState([]);
 
   useEffect(() => {
     getArticleByID(article_id)
@@ -24,6 +33,21 @@ const SingleArticleDetails = ({ article, setArticle }) => {
   }, []);
 
   useEffect(() => {
+    getCommentsByArticleID(article_id)
+      .then(({ data }) => {
+        setIsCommentListError(false);
+        if (!data.comments) {
+          setIsCommentListError(true);
+        }
+        setComments(data.comments);
+        setIsLoading(false);
+      })
+      .catch(() => {
+        setIsCommentListError(true);
+      });
+  }, [article]);
+
+  useEffect(() => {
     getArticleByID(article_id)
       .then(({ data }) => {
         setIsError(false);
@@ -34,6 +58,10 @@ const SingleArticleDetails = ({ article, setArticle }) => {
         setIsError(true);
       });
   }, [isClicked]);
+
+  function handleClickComments() {
+    setCommentsHidden(!commentsHidden);
+  }
 
   function handleVoteClick(article_id) {
     setVoteCount(voteCount + 1);
@@ -75,17 +103,25 @@ const SingleArticleDetails = ({ article, setArticle }) => {
         <p className="article-vote-count">Votes: {voteCount}</p>
       </div>
       <div className="single-article-line">
-        <Link to={`/articles/${article_id}/comments`}>
-          <button className="btn">View/Post Comments</button>
-        </Link>
+      <button className="btn"onClick={handleClickComments}>{`${commentsHidden? 'Show' : 'Hide'} Comments`}</button>
         <div>
           <button className="btn" onClick={() => handleVoteClick(article_id)}>
             Vote+
           </button>
-          <button className="btn" onClick={() => handleDownvoteClick(article_id)}>
+          <button
+            className="btn"
+            onClick={() => handleDownvoteClick(article_id)}
+          >
             Vote-
           </button>
         </div>
+      </div>
+      <div className={`comment-list-${commentsHidden? 'hidden' : 'shown'}`}>
+        <CommentList
+          comments={comments}
+          isLoading={isLoading}
+          isCommentListError={isCommentListError}
+        ></CommentList>
       </div>
       <p className="article-created">Created: {article.created_at}</p>
     </div>

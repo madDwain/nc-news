@@ -197,3 +197,11 @@
   font-weight: 500;
   font-style: oblique;
 }
+
+.comment-list-hidden {
+  display: none
+}
+
+.comment-list-shown {
+  display:flex
+}

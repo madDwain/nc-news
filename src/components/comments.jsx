@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import CommentList from "./commentList";
-import { postComment } from "../utils/api";
+import { postComment, getCommentsByArticleID } from "../../utils/api";
 import { Link, useParams } from "react-router-dom";
-import { getCommentsByArticleID } from "../utils/api";
 
 const Comments = ({ article }) => {
   const { article_id } = useParams();
@@ -51,7 +50,7 @@ const Comments = ({ article }) => {
         setIsCommentListError(false);
         setIsSubmitted(!isSubmitted);
         setIsSuccessful(true);
-        console.log(data)
+        console.log(data);
       })
       .catch(() => {
         setIsSuccessful(false);
@@ -68,15 +67,6 @@ const Comments = ({ article }) => {
 
   return (
     <div className="single-article-full-details">
-      <p className="article-title">{article.title}</p>
-      <div className="single-article-line">
-        <p className="article-author">Author: {article.author}</p>
-        <p className="article-topic">Topic: {article.topic}</p>
-      </div>
-      <p className="article-body">{article.body}</p>
-      <div className="single-article-line">
-        <p className="article-comment-count">Comment Count: {commentCount}</p>
-      </div>
       <button
         className="btn"
         onClick={() => {

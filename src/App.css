@@ -1,6 +1,6 @@
 #root {
   display: flex;
-  flex-direction: column ;
+  flex-direction: column;
   justify-content: center;
   max-width: 1280px;
   margin: 0 auto;
@@ -20,7 +20,7 @@
 }
 
 .navbar-item {
-  display:inline;
+  display: inline;
   margin: 1rem;
   padding: 4px;
   font-weight: 550;
@@ -33,7 +33,7 @@
   flex-flow: column;
   align-items: center;
   padding: 2rem;
-  background-color:darkcyan;
+  background-color: darkcyan;
   border-radius: 8px;
 }
 
@@ -51,7 +51,7 @@
 }
 
 .single-article-line {
-  display:flex;
+  display: flex;
   width: 100%;
   justify-content: space-between;
   align-items: baseline;
@@ -89,6 +89,8 @@
 }
 
 .single-article-full-details {
+  display: flex;
+  flex-direction: column;
   align-items: center;
   align-self: center;
   border: solid;
@@ -101,7 +103,7 @@
 
 .article-body {
   font-size: larger;
-  background-color:cornsilk;
+  background-color: cornsilk;
   padding: 1rem;
   border: 1rem;
   border: solid;
@@ -111,19 +113,18 @@
 .single-article-img {
   border-radius: 10px;
   width: 80%;
-  max-width: 1500px
+  max-width: 1500px;
 }
 
 .btn {
   font-size: large;
   padding: 4px;
-  background-color:cornsilk;
+  background-color: cornsilk;
   border-radius: 4px;
-  border:black solid 1px;
+  border: black solid 1px;
 }
 
-
-.comment-list{
+.comment-list {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -136,7 +137,7 @@
   flex-direction: column;
   border: solid;
   border-radius: 10px;
-  padding: 2rem;
+  padding: 1rem;
   margin: 0px, 0px;
   margin-bottom: 4px;
   background-color: rgb(230, 208, 208);
@@ -149,4 +150,50 @@
   background-color: aliceblue;
   border-radius: 10px;
   font-size: large;
+}
+
+.post-comment-hidden {
+  display: none;
+}
+
+.post-comment-shown {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  align-self: center;
+  border: solid;
+  border-radius: 10px;
+  padding: 1rem;
+  margin: 1rem;
+  background-color: rgb(226, 160, 79);
+  width: 90%;
+  max-width: 1500px;
+}
+
+.single-post-comment-line {
+  display: flex;
+  width: 100%;
+  justify-content: left;
+  align-items: baseline;
+}
+
+#commenter {
+  margin-left: 1rem;
+  border-radius: 4px;
+  border: solid 2px;
+  width: 40%;
+}
+
+#comment-body {
+  margin-left: 1rem;
+  border-radius: 4px;
+  border: solid 2px;
+  width: 75%;
+}
+
+.empty-comment-msg {
+  color: rgb(0, 0, 0);
+  font-size: large;
+  font-weight: 500;
+  font-style: oblique;
 }

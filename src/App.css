@@ -257,6 +257,10 @@
   display: none;
 }
 
-.user-comment-false {
+#user-comment-false {
+  display: none;
+}
+
+.hide-button{
   display: none;
 }

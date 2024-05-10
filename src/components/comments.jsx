@@ -16,7 +16,8 @@ const Comments = ({
   const [commentBody, setCommentBody] = useState("");
   const [isPostCommentShown, setIsPostCommentShown] = useState(false);
   const [isEmpty, setIsEmpty] = useState(true);
-  const [hasCommented, setHasCommented] = useState(false)
+  const [hasCommented, setHasCommented] = useState(false);
+  const [isCommentDeleted, setIsCommentDeleted] = useState(false);
 
   const { user } = useLogin();
 
@@ -30,27 +31,35 @@ const Comments = ({
     } else setIsEmpty(false);
   }, [commentBody]);
 
+  useEffect(() => {
+    getCommentsByArticleID(article_id).then(({ data }) => {
+      setComments(data.comments);
+      setCommentCount(data.comments.length)
+      console.log('resetting comments')
+    });
+  }, [isCommentDeleted]);
+
   function handleSubmitComment(commentBody, e) {
     e.preventDefault();
     return postComment(user, commentBody, article_id).then(() => {
       setCommentCount(article.comment_count);
       getCommentsByArticleID(article_id).then(({ data }) => {
         setComments(data.comments);
-        setHasCommented(true)
-        setIsPostCommentShown(false)
+        setHasCommented(true);
+        setIsPostCommentShown(false);
       });
     });
   }
 
   return (
     <div className="post-comment">
-      <p>{`${hasCommented ? `Thank you for commenting, ${user}!` : ''}`}</p>
+      <p>{`${hasCommented ? `Thank you for commenting, ${user}!` : ""}`}</p>
       <button
         className="btn"
         onClick={() => {
           handleClickPostComment();
         }}
-        id={`post-comment-button-${hasCommented ? 'hidden' : 'shown'}`}
+        id={`post-comment-button-${hasCommented ? "hidden" : "shown"}`}
       >
         {isPostCommentShown ? "Hide" : "Post a comment"}
       </button>
@@ -67,7 +76,9 @@ const Comments = ({
           }`}
         >
           <div className="single-post-comment-line">
-            <label htmlFor="comment-body" id="comment-label">Body:</label>
+            <label htmlFor="comment-body" id="comment-label">
+              Body:
+            </label>
             <textarea
               value={commentBody}
               type="Text"
@@ -90,8 +101,10 @@ const Comments = ({
       </div>
       <CommentList
         comments={comments}
+        setIsCommentDeleted={setIsCommentDeleted}
         isLoading={isLoading}
         isCommentListError={isCommentListError}
+        isCommentDeleted={isCommentDeleted}
       />
     </div>
   );

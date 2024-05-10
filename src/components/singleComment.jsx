@@ -10,8 +10,6 @@ const SingleComment = ({ comment }) => {
       <p className="comment-body">{comment.body}</p>
       <div className="single-article-line">
         <p className="article-vote-count">Vote count: {comment.votes}</p>
-        {/* not functional yet button */}
-        <button className="btn">Vote</button>
       </div>
     </div>
   );

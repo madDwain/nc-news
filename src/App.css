@@ -203,5 +203,11 @@
 }
 
 .comment-list-shown {
-  display:flex
+  display:flex;
+  flex-direction: column;
+}
+
+.post-comment {
+  margin: 1rem;
+  background-color: aquamarine;
 }

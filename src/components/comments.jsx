@@ -1,36 +1,21 @@
 import React, { useState, useEffect } from "react";
-import CommentList from "./commentList";
 import { postComment, getCommentsByArticleID } from "../../utils/api";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import CommentList from "./commentList";
 
-const Comments = ({ article }) => {
+const Comments = ({
+  article,
+  setCommentCount,
+  isCommentListError,
+  isLoading,
+  comments,
+  setComments
+}) => {
   const { article_id } = useParams();
   const [commentBody, setCommentBody] = useState("");
   const [commenter, setCommenter] = useState("");
-  const [comments, setComments] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [isCommentListError, setIsCommentListError] = useState(false);
-  const [isSubmitted, setIsSubmitted] = useState(false);
   const [isPostCommentShown, setIsPostCommentShown] = useState(false);
   const [isEmpty, setIsEmpty] = useState(true);
-  const [isSuccessful, setIsSuccessful] = useState(true);
-  const [commentCount, setCommentCount] = useState(article.comment_count);
-
-  useEffect(() => {
-    getCommentsByArticleID(article_id)
-      .then(({ data }) => {
-        setIsCommentListError(false);
-        if (!data.comments) {
-          setIsCommentListError(true);
-        }
-        setComments(data.comments);
-        console.log(article.comment_count, "comment_count");
-        setIsLoading(false);
-      })
-      .catch(() => {
-        setIsCommentListError(true);
-      });
-  }, [article, isSubmitted]);
 
   function handleClickPostComment() {
     setIsPostCommentShown(!isPostCommentShown);
@@ -44,29 +29,16 @@ const Comments = ({ article }) => {
 
   function handleSubmitComment(commenter, commentBody, e) {
     e.preventDefault();
-    return postComment(commenter, commentBody, article_id)
-      .then((data) => {
-        setCommentCount(Number(commentCount) + 1);
-        setIsCommentListError(false);
-        setIsSubmitted(!isSubmitted);
-        setIsSuccessful(true);
-        console.log(data);
+    return postComment(commenter, commentBody, article_id).then(() => {
+      setCommentCount(article.comment_count)
+      getCommentsByArticleID(article_id).then(({data}) => {
+        setComments(data.comments)
       })
-      .catch(() => {
-        setIsSuccessful(false);
-      });
-  }
-
-  if (article.length === 0) {
-    return (
-      <Link to={`/articles/${article_id}`}>
-        Something has gone wrong... Click here to reload
-      </Link>
-    );
+    })
   }
 
   return (
-    <div className="single-article-full-details">
+    <div className="post-comment">
       <button
         className="btn"
         onClick={() => {
@@ -82,13 +54,7 @@ const Comments = ({ article }) => {
         <p className="empty-comment-msg">
           {isEmpty ? "Please fill in Username & Comment" : ""}
         </p>
-        <p className="empty-comment-msg">
-          {isSuccessful ? (
-            <></>
-          ) : (
-            "Something has gone wrong, the comment has not been posted."
-          )}
-        </p>
+
         <div className="single-post-comment-line">
           <label htmlFor="commenter">Username:</label>
           <input
@@ -125,7 +91,7 @@ const Comments = ({ article }) => {
         comments={comments}
         isLoading={isLoading}
         isCommentListError={isCommentListError}
-      ></CommentList>
+      />
     </div>
   );
 };

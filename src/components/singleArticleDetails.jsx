@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useState } from "react";
 import {
   getArticleByID,
@@ -7,15 +7,17 @@ import {
   incDownArticleVote,
   getCommentsByArticleID,
 } from "../../utils/api";
-import CommentList from "./commentList";
+import Comments from "./comments";
 
-const SingleArticleDetails = ({ article, setArticle }) => {
+const SingleArticleDetails = () => {
   const { article_id } = useParams();
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
   const [isClicked, setIsClicked] = useState(false);
+  const [commentsHidden, setCommentsHidden] = useState(true);
+  const [article, setArticle] = useState([]);
   const [voteCount, setVoteCount] = useState(article.votes);
-  const [commentsHidden, setCommentsHidden] = useState(false);
+  const [commentCount, setCommentCount] = useState('');
   const [isCommentListError, setIsCommentListError] = useState(false);
   const [comments, setComments] = useState([]);
 
@@ -24,7 +26,10 @@ const SingleArticleDetails = ({ article, setArticle }) => {
       .then(({ data }) => {
         setIsError(false);
         setArticle(data.article);
+        setCommentCount(data.article.comment_count)
         setVoteCount(data.article.votes);
+      })
+      .then(() => {
         setIsLoading(false);
       })
       .catch(() => {
@@ -40,6 +45,7 @@ const SingleArticleDetails = ({ article, setArticle }) => {
           setIsCommentListError(true);
         }
         setComments(data.comments);
+        setCommentCount(data.comments.length)
         setIsLoading(false);
       })
       .catch(() => {
@@ -47,36 +53,44 @@ const SingleArticleDetails = ({ article, setArticle }) => {
       });
   }, [article]);
 
-  useEffect(() => {
-    getArticleByID(article_id)
-      .then(({ data }) => {
-        setIsError(false);
-        setVoteCount(data.article.votes);
-        setIsLoading(false);
-      })
-      .catch(() => {
-        setIsError(true);
-      });
-  }, [isClicked]);
-
-  function handleClickComments() {
-    setCommentsHidden(!commentsHidden);
-  }
-
   function handleVoteClick(article_id) {
     setVoteCount(voteCount + 1);
-    incArticleVote(article_id).then(({ data }) => {
-      setVoteCount(data.votes);
-      setIsClicked(!isClicked);
-    });
+    incArticleVote(article_id)
+      .then(({ data }) => {
+        setVoteCount(data.votes);
+        setIsClicked(!isClicked);
+      })
+      .then(() => {
+        getArticleByID(article_id)
+          .then(({ data }) => {
+            setIsError(false);
+            setVoteCount(data.article.votes);
+            setIsLoading(false);
+          })
+          .catch(() => {
+            setIsError(true);
+          });
+      });
   }
 
   function handleDownvoteClick(article_id) {
     setVoteCount(voteCount - 1);
-    incDownArticleVote(article_id).then(({ data }) => {
-      setVoteCount(data.votes);
-      setIsClicked(!isClicked);
-    });
+    incDownArticleVote(article_id)
+      .then(({ data }) => {
+        setVoteCount(data.votes);
+        setIsClicked(!isClicked);
+      })
+      .then(() => {
+        getArticleByID(article_id)
+          .then(({ data }) => {
+            setIsError(false);
+            setVoteCount(data.article.votes);
+            setIsLoading(false);
+          })
+          .catch(() => {
+            setIsError(true);
+          });
+      });
   }
 
   if (isLoading) {
@@ -97,13 +111,14 @@ const SingleArticleDetails = ({ article, setArticle }) => {
       </div>
       <p className="article-body">{article.body}</p>
       <div className="single-article-line">
-        <p className="article-comment-count">
-          Comment Count: {article.comment_count}
-        </p>
+        <p className="article-comment-count">Comment Count: {commentCount}</p>
         <p className="article-vote-count">Votes: {voteCount}</p>
       </div>
       <div className="single-article-line">
-      <button className="btn"onClick={handleClickComments}>{`${commentsHidden? 'Show' : 'Hide'} Comments`}</button>
+        <button
+          className="btn"
+          onClick={() => setCommentsHidden(!commentsHidden)}
+        >{`${commentsHidden ? "Show" : "Hide"} Comments`}</button>
         <div>
           <button className="btn" onClick={() => handleVoteClick(article_id)}>
             Vote+
@@ -116,12 +131,15 @@ const SingleArticleDetails = ({ article, setArticle }) => {
           </button>
         </div>
       </div>
-      <div className={`comment-list-${commentsHidden? 'hidden' : 'shown'}`}>
-        <CommentList
-          comments={comments}
-          isLoading={isLoading}
+      <div className={`comment-list-${commentsHidden ? "hidden" : "shown"}`}>
+        <Comments
+          article={article}
+          setCommentCount={setCommentCount}
           isCommentListError={isCommentListError}
-        ></CommentList>
+          isLoading={isLoading}
+          comments={comments}
+          setComments={setComments}
+        />
       </div>
       <p className="article-created">Created: {article.created_at}</p>
     </div>

@@ -17,16 +17,17 @@ const SingleArticleDetails = () => {
   const [commentsHidden, setCommentsHidden] = useState(true);
   const [article, setArticle] = useState([]);
   const [voteCount, setVoteCount] = useState(article.votes);
-  const [commentCount, setCommentCount] = useState('');
+  const [commentCount, setCommentCount] = useState("");
   const [isCommentListError, setIsCommentListError] = useState(false);
   const [comments, setComments] = useState([]);
+  const [hasVoted, setHasVoted] = useState(false);
 
   useEffect(() => {
     getArticleByID(article_id)
       .then(({ data }) => {
         setIsError(false);
         setArticle(data.article);
-        setCommentCount(data.article.comment_count)
+        setCommentCount(data.article.comment_count);
         setVoteCount(data.article.votes);
       })
       .then(() => {
@@ -45,7 +46,7 @@ const SingleArticleDetails = () => {
           setIsCommentListError(true);
         }
         setComments(data.comments);
-        setCommentCount(data.comments.length)
+        setCommentCount(data.comments.length);
         setIsLoading(false);
       })
       .catch(() => {
@@ -55,6 +56,7 @@ const SingleArticleDetails = () => {
 
   function handleVoteClick(article_id) {
     setVoteCount(voteCount + 1);
+    setHasVoted(true);
     incArticleVote(article_id)
       .then(({ data }) => {
         setVoteCount(data.votes);
@@ -75,6 +77,7 @@ const SingleArticleDetails = () => {
 
   function handleDownvoteClick(article_id) {
     setVoteCount(voteCount - 1);
+    setHasVoted(true);
     incDownArticleVote(article_id)
       .then(({ data }) => {
         setVoteCount(data.votes);
@@ -119,7 +122,7 @@ const SingleArticleDetails = () => {
           className="btn"
           onClick={() => setCommentsHidden(!commentsHidden)}
         >{`${commentsHidden ? "Show" : "Hide"} Comments`}</button>
-        <div>
+        <div className={`has-voted-${hasVoted}`} id="vote-btns">
           <button className="btn" onClick={() => handleVoteClick(article_id)}>
             Vote+
           </button>
@@ -130,6 +133,7 @@ const SingleArticleDetails = () => {
             Vote-
           </button>
         </div>
+        <p className={`has-voted-${hasVoted}`} id="vote-message">Thanks for voting!</p>
       </div>
       <div className={`comment-list-${commentsHidden ? "hidden" : "shown"}`}>
         <Comments

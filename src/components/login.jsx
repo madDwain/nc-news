@@ -12,27 +12,24 @@ const Login = () => {
     getUsers(usernameInput)
       .then(({ data }) => {
         const { users } = data;
-        console.log(users);
         users.forEach((user) => {
           if (user.username === usernameInput) {
-            console.log('hit')
             setUser(user.username);
           } else {
             return Promise.reject()
           }
         });
-        console.log('setUser as ', user)
       })
   }
   return (
-    <>
+    <div className="login-box">
+        <label>Enter Username:</label>
       <input
         value={usernameInput}
         type="Text"
         id="usernameInput"
         onInput={(e) => {
           setUsernameInput(e.target.value);
-          console.log(usernameInput);
         }}
       ></input>
       <button
@@ -42,7 +39,8 @@ const Login = () => {
       >
         Login
       </button>
-    </>
+      <p>{user===null ? 'You are not logged in, please enter a valid username' : 'You are now logged in'}</p>
+    </div>
   );
 };
 

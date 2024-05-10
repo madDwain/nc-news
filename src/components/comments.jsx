@@ -35,7 +35,6 @@ const Comments = ({
     getCommentsByArticleID(article_id).then(({ data }) => {
       setComments(data.comments);
       setCommentCount(data.comments.length)
-      console.log('resetting comments')
     });
   }, [isCommentDeleted]);
 

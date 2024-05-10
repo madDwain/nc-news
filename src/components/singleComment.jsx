@@ -13,9 +13,6 @@ const SingleComment = ({ comment, setIsCommentDeleted, isCommentDeleted }) => {
         setIsCommentDeleted(!isCommentDeleted);
         setIsLoading(false)
       })
-      .catch(() => {
-        console.log("FAIL");
-      });
   }
 
   return (

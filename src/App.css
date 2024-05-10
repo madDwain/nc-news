@@ -249,11 +249,18 @@
   display: none;
 }
 
-.has-voted-true#btn {
-  display:none;
+.has-voted-true#vote-btns {
+  display: none;
 }
 
 .has-voted-false#vote-message {
-  display:none;
+  display: none;
 }
 
+#user-comment-false {
+  display: none;
+}
+
+.hide-button{
+  display: none;
+}

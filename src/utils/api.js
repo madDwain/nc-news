@@ -24,13 +24,18 @@ export function incDownArticleVote(article_id) {
   return ncNewsAPI.patch(`/articles/${article_id}`, { inc_votes: -1 });
 }
 
-export function postComment(commenter, commentBody, article_id) {
+export function postComment(user, commentBody, article_id) {
   return ncNewsAPI.post(`/articles/${article_id}/comments`, {
-    username: commenter,
+    username: user,
     body: commentBody,
   });
 }
 
-export function getUsers(usernameInput) {
+export function getUsers() {
   return ncNewsAPI.get("/users", {});
 }
+
+export function deleteComment(comment_id) {
+  return ncNewsAPI.delete(`/comments/${comment_id}`, {})
+}
+

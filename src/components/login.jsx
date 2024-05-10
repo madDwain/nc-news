@@ -8,7 +8,6 @@ const Login = () => {
   const { user, setUser } = useLogin();
 
   function handleClick(usernameInput) {
-    console.log("clicked");
     getUsers(usernameInput)
       .then(({ data }) => {
         const { users } = data;

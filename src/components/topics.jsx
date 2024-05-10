@@ -1,11 +1,31 @@
-import React from 'react'
+import React, { useEffect, useState } from "react";
+import { getTopics } from "../utils/api";
+import { Link } from "react-router-dom";
 
 const Topics = () => {
-  return (
-    <>
-      Topcisana
-    </>
-  )
-}
+  const [topics, setTopics] = useState([]);
+  const [isHidden, setIsHidden] = useState(true)
+  useEffect(() => {
+    getTopics().then(({ data }) => {
+      setTopics(data);
+    });
+  }, []);
 
-export default Topics
+  return (
+    <ul className="topics-list">
+      <p>Select a topic:</p>
+      {topics.map((topic) => {
+        return (
+          <div className="topic-link-and-description">
+            <Link onPointerOver={() => setIsHidden(false)}className="topic-link" to={`/topic/${topic.slug}`}>
+              {topic.slug}
+            </Link>
+            <p  className={`${isHidden? 'hide-button' : 'show-button'}`}>{topic.description}</p>
+          </div>
+        );
+      })}
+    </ul>
+  );
+};
+
+export default Topics;

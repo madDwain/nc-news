@@ -4,8 +4,12 @@ const ncNewsAPI = axios.create({
   baseURL: "https://nc-news-dwainfco.onrender.com/api",
 });
 
-export function getAllArticles() {
-  return ncNewsAPI.get("/articles", {});
+export function getAllArticles(topic) {
+  return ncNewsAPI.get("/articles", {
+    params: {
+      topic,
+    },
+  });
 }
 
 export function getArticleByID(article_id) {
@@ -36,6 +40,9 @@ export function getUsers() {
 }
 
 export function deleteComment(comment_id) {
-  return ncNewsAPI.delete(`/comments/${comment_id}`, {})
+  return ncNewsAPI.delete(`/comments/${comment_id}`, {});
 }
 
+export function getTopics() {
+  return ncNewsAPI.get("/topics", {});
+}

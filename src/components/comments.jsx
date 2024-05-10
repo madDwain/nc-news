@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { postComment, getCommentsByArticleID } from "../../utils/api";
+import { postComment, getCommentsByArticleID } from "../utils/api";
 import { useParams } from "react-router-dom";
 import CommentList from "./commentList";
+import { useLogin } from "../contexts/login";
 
 const Comments = ({
   article,
@@ -9,42 +10,47 @@ const Comments = ({
   isCommentListError,
   isLoading,
   comments,
-  setComments
+  setComments,
 }) => {
   const { article_id } = useParams();
   const [commentBody, setCommentBody] = useState("");
-  const [commenter, setCommenter] = useState("");
   const [isPostCommentShown, setIsPostCommentShown] = useState(false);
   const [isEmpty, setIsEmpty] = useState(true);
+  const [hasCommented, setHasCommented] = useState(false)
+
+  const { user } = useLogin();
 
   function handleClickPostComment() {
     setIsPostCommentShown(!isPostCommentShown);
   }
 
   useEffect(() => {
-    if (!commenter || !commentBody) {
+    if (!commentBody) {
       setIsEmpty(true);
     } else setIsEmpty(false);
-  }, [commenter, commentBody]);
+  }, [commentBody]);
 
-  function handleSubmitComment(commenter, commentBody, e) {
+  function handleSubmitComment(commentBody, e) {
     e.preventDefault();
-    return postComment(commenter, commentBody, article_id).then(() => {
-      setCommentCount(article.comment_count)
-      getCommentsByArticleID(article_id).then(({data}) => {
-        setComments(data.comments)
-      })
-    })
+    return postComment(user, commentBody, article_id).then(() => {
+      setCommentCount(article.comment_count);
+      getCommentsByArticleID(article_id).then(({ data }) => {
+        setComments(data.comments);
+        setHasCommented(true)
+        setIsPostCommentShown(false)
+      });
+    });
   }
 
   return (
     <div className="post-comment">
+      <p>{`${hasCommented ? `Thank you for commenting, ${user}!` : ''}`}</p>
       <button
         className="btn"
         onClick={() => {
           handleClickPostComment();
         }}
-        id="post-comment-button"
+        id={`post-comment-button-${hasCommented ? 'hidden' : 'shown'}`}
       >
         {isPostCommentShown ? "Hide" : "Post a comment"}
       </button>
@@ -52,40 +58,35 @@ const Comments = ({
         className={`post-comment-${isPostCommentShown ? "shown" : "hidden"}`}
       >
         <p className="empty-comment-msg">
-          {isEmpty ? "Please fill in Username & Comment" : ""}
+          {isEmpty ? "Please fill in Comment" : ""}
         </p>
-
-        <div className="single-post-comment-line">
-          <label htmlFor="commenter">Username:</label>
-          <input
-            value={commenter}
-            type="Text"
-            id="commenter"
-            onChange={(e) => {
-              setCommenter(e.target.value);
-            }}
-          ></input>
-        </div>
-        <div className="single-post-comment-line">
-          <label htmlFor="comment-body">Body:</label>
-          <textarea
-            value={commentBody}
-            type="Text"
-            id="comment-body"
-            rows="4"
-            onChange={(e) => {
-              setCommentBody(e.target.value);
-            }}
-          ></textarea>
-        </div>
-        <button
-          className="btn"
-          onClick={(e) => {
-            handleSubmitComment(commenter, commentBody, e);
-          }}
+        <p id="commenter">{user === null ? "Please login" : `${user}`}</p>
+        <div
+          className={`comment-body-and-submit-${
+            user === null ? "hidden" : "shown"
+          }`}
         >
-          Submit
-        </button>
+          <div className="single-post-comment-line">
+            <label htmlFor="comment-body" id="comment-label">Body:</label>
+            <textarea
+              value={commentBody}
+              type="Text"
+              id="comment-body"
+              rows="4"
+              onChange={(e) => {
+                setCommentBody(e.target.value);
+              }}
+            ></textarea>
+          </div>
+          <button
+            className="btn"
+            onClick={(e) => {
+              handleSubmitComment(commentBody, e);
+            }}
+          >
+            Submit
+          </button>
+        </div>
       </div>
       <CommentList
         comments={comments}

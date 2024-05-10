@@ -170,6 +170,15 @@
   max-width: 1500px;
 }
 
+.comment-body-and-submit-hidden {
+  display: none;
+}
+
+.comment-body-and-submit-shown {
+  width: 100%;
+  align-self: center;
+}
+
 .single-post-comment-line {
   display: flex;
   width: 100%;
@@ -182,10 +191,20 @@
   border-radius: 4px;
   border: solid 2px;
   width: 40%;
+  background-color: rgb(107, 162, 211);
+}
+
+#comment-label {
+  border-radius: 4px;
+  border: solid 2px;
+  margin: 5px;
+  width: 10%;
+  min-width: 75px;
+  background-color: rgb(107, 162, 211);
 }
 
 #comment-body {
-  margin-left: 1rem;
+  margin: 1rem;
   border-radius: 4px;
   border: solid 2px;
   width: 75%;
@@ -199,11 +218,11 @@
 }
 
 .comment-list-hidden {
-  display: none
+  display: none;
 }
 
 .comment-list-shown {
-  display:flex;
+  display: flex;
   flex-direction: column;
 }
 
@@ -211,3 +230,30 @@
   margin: 1rem;
   background-color: aquamarine;
 }
+
+.login-box {
+  align-items: center;
+  align-self: center;
+  border: solid;
+  border-radius: 10px;
+  padding: 2rem;
+  padding-top: 3rem;
+  margin: 1rem;
+  margin-top: 2rem;
+  background-color: rgb(226, 160, 79);
+  width: 90%;
+  max-width: 1500px;
+}
+
+#post-comment-button-hidden {
+  display: none;
+}
+
+.has-voted-true#btn {
+  display:none;
+}
+
+.has-voted-false#vote-message {
+  display:none;
+}
+

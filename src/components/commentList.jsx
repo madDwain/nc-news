@@ -17,20 +17,18 @@ const CommentList = ({
   }
 
   return (
-    <>
-      <ul className="comment-list">
-        {comments.map((comment) => {
-          return (
-            <SingleComment
-              setIsCommentDeleted={setIsCommentDeleted}
-              comment={comment}
-              key={comment.comment_id}
-              isCommentDeleted={isCommentDeleted}
-            ></SingleComment>
-          );
-        })}
-      </ul>
-    </>
+    <ul className="comment-list">
+      {comments.map((comment) => {
+        return (
+          <SingleComment
+            setIsCommentDeleted={setIsCommentDeleted}
+            comment={comment}
+            key={comment.comment_id}
+            isCommentDeleted={isCommentDeleted}
+          ></SingleComment>
+        );
+      })}
+    </ul>
   );
 };
 

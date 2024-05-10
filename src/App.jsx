@@ -13,6 +13,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/topics" element={<Topics />} />
+        <Route path="/topic/:topic" element={<Home />} />
         <Route
           path="/articles/:article_id"
           element={<SingleArticleDetails />}

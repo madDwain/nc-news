@@ -261,6 +261,32 @@
   display: none;
 }
 
-.hide-button{
+.hide-button {
   display: none;
 }
+
+.topics-list {
+  display: flex;
+  align-items: center;
+  align-self: center;
+  flex-direction: column;
+  border: solid;
+  border-radius: 10px;
+  padding: 1rem;
+  margin-bottom: 4px;
+  background-color: bisque;
+}
+
+.topic-link {
+  font-variant-caps:all-petite-caps;
+  font-weight: 600;
+  margin: 1rem;
+  font-size: larger;
+}
+ .topic-link-and-description {
+  padding: 1rem;
+  border:solid;
+  margin:0.5rem;
+  border-radius: 1rem;
+  background-color:rgb(255, 192, 110);
+ }

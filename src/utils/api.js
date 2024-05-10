@@ -28,5 +28,9 @@ export function postComment(commenter, commentBody, article_id) {
   return ncNewsAPI.post(`/articles/${article_id}/comments`, {
     username: commenter,
     body: commentBody,
-  })
+  });
+}
+
+export function getUsers(usernameInput) {
+  return ncNewsAPI.get("/users", {});
 }

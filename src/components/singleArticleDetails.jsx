@@ -6,7 +6,7 @@ import {
   incArticleVote,
   incDownArticleVote,
   getCommentsByArticleID,
-} from "../../utils/api";
+} from "../utils/api";
 import Comments from "./comments";
 
 const SingleArticleDetails = () => {

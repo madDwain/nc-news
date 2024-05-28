@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 
 const Topics = () => {
   const [topics, setTopics] = useState([]);
-  const [isHidden, setIsHidden] = useState(true)
   useEffect(() => {
     getTopics().then(({ data }) => {
       setTopics(data);
@@ -17,10 +16,10 @@ const Topics = () => {
       {topics.map((topic) => {
         return (
           <div className="topic-link-and-description">
-            <Link onPointerOver={() => setIsHidden(false)}className="topic-link" to={`/topic/${topic.slug}`}>
+            <Link className="topic-link" to={`/topic/${topic.slug}`}>
               {topic.slug}
             </Link>
-            <p  className={`${isHidden? 'hide-button' : 'show-button'}`}>{topic.description}</p>
+            <p>{topic.description}</p>
           </div>
         );
       })}

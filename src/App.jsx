@@ -10,6 +10,7 @@ function App() {
     <>
       NC News
       <Header />
+      <div className='gradient_background'></div>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/topics" element={<Topics />} />
